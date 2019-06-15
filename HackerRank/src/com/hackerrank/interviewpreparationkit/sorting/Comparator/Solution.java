@@ -67,7 +67,7 @@ class Checker implements Comparator<Player> {
 					char[] cname1 = name1.toCharArray();
 					char[] cname2 = name2.toCharArray();
 
-					System.out.println("Comparing: " + name1 + " vs " + name2);
+					//System.out.println("Comparing: " + name1 + " vs " + name2);
 					if (len1 < len2) {
 						n = len1;
 					}
@@ -77,16 +77,21 @@ class Checker implements Comparator<Player> {
 					
 					for (int i=0;i<n;i++) {
 						if (cname1[i] < cname2[i]) {
-							System.out.println(name1 + " is smaller than " + name2);
+							//System.out.println(name1 + " is smaller than " + name2);
 							return -1;
 						} 
 						if (cname1[i] > cname2[i]) {
-							System.out.println(name1 + " is bigger than " + name2);
+							//System.out.println(name1 + " is bigger than " + name2);
 							return 1;
 						} 
 					}
-					System.out.println(name1 + " is smaller than " + name2);
-					return -1;
+					if (len1 < len2) {
+						//System.out.println(name1 + " is smaller than " + name2);
+						return -1;
+						} else { 
+						//System.out.println(name2 + " is smaller than " + name1);
+						return 1;
+						}
 				}
 				return -1;
 			}
