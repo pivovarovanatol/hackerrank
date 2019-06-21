@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
@@ -12,93 +13,91 @@ public class Solution {
 
     public static void main(String[] args) throws IOException {
 
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\sorting\\FraudulentActivityNotifications\r\n" + 
-        		"\r\n" + 
-        		"\\data.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\sorting\\FraudulentActivityNotifications\\data.txt");
         Scanner scanner = new Scanner(file);
         
-        File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\sorting\\FraudulentActivityNotifications\r\n" + 
-        		"\r\n" + 
-        		"\\result.txt");
+        File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\sorting\\FraudulentActivityNotifications\\result.txt");
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file_result));
-        int n = scanner.nextInt();
 
-        Player[] player = new Player[n];
-        Checker checker = new Checker();
-        
-        for(int i = 0; i < n; i++){
-            player[i] = new Player(scanner.next(), scanner.nextInt());
-        }
-        scanner.close();
+        String[] nd = scanner.nextLine().split(" ");
 
-        Arrays.sort(player, checker);
-        for(int i = 0; i < player.length; i++){
-            System.out.printf("%s %s\n", player[i].name, player[i].score);
+        int n = Integer.parseInt(nd[0]);
+
+        int d = Integer.parseInt(nd[1]);
+
+        int[] expenditure = new int[n];
+
+        System.out.println(d + " " + n);
+        String[] expenditureItems = scanner.nextLine().split(" ");
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int i = 0; i < n; i++) {
+            int expenditureItem = Integer.parseInt(expenditureItems[i]);
+            expenditure[i] = expenditureItem;
         }
-        
+
+        int result = activityNotifications(expenditure, d);
+        System.out.println(result);
     }
-}
 
 
-class Player {
-	String name;
-	int score;
+// Complete the activityNotifications function below.
+    static int activityNotifications(int[] expenditure, int d) {
+    	//printArray(expenditure);
+    	int start = 0;
+    	int finish=d;
+    	int median = 0;
+    	int count=0;
+    	
+    	for (int i = d; i<expenditure.length;i++) {
+    		start = i-d;
+    		finish = i-1;
+    		median = getMedian(expenditure, start, finish);
+    		//System.out.println(median);
+    		if (expenditure[i]>= median*2) {
+    			count++;
+    		}
+    	}
+    	
+    	return count;
+    }
 
-	Player(String name, int score) {
-		this.name = name;
-		this.score = score;
-	}
-}
+    static int getMedian(int arr[], int start, int finish) 
+    { 
 
-	
-class Checker implements Comparator<Player> {
-	  	// complete this method
-		public int compare(Player a, Player b) {
-			
-			String name1 = a.name;
-			int score1 = a.score;
-			String name2 = b.name;
-			int score2 = b.score;
-			
-			if (score1 < score2) {
-				return 1;
-			}
-			else {
-				if (score1 == score2) {
-					int len1 = name1.length();
-					int len2 = name2.length();
-					int n = 0;
-					char[] cname1 = name1.toCharArray();
-					char[] cname2 = name2.toCharArray();
+    	int n = finish - start+1;
+        int[] tmp = new int[n];
+    	
+        for (int i=start;i<=finish;i++) {
+        	tmp[i-start]=arr[i];
+        }
+        
+        Arrays.sort(tmp);
+        int median = 0;
+        
+        if (n%2 == 0) {
+            int index = n/2;
+            median = (tmp[index]+tmp[index+1])/2;
+        } else {
+            int index = n/2;
+            median = (tmp[index]);
+        }
+        
+        //printArray(tmp);
+        //System.out.println(median);
+        return median;
+    } 
 
-					//System.out.println("Comparing: " + name1 + " vs " + name2);
-					if (len1 < len2) {
-						n = len1;
-					}
-					else {
-						n = len2;
-					}
-					
-					for (int i=0;i<n;i++) {
-						if (cname1[i] < cname2[i]) {
-							//System.out.println(name1 + " is smaller than " + name2);
-							return -1;
-						} 
-						if (cname1[i] > cname2[i]) {
-							//System.out.println(name1 + " is bigger than " + name2);
-							return 1;
-						} 
-					}
-					if (len1 < len2) {
-						//System.out.println(name1 + " is smaller than " + name2);
-						return -1;
-						} else { 
-						//System.out.println(name2 + " is smaller than " + name1);
-						return 1;
-						}
-				}
-				return -1;
-			}
-		}
-		
+    
+
+    /* A utility function to print array of size n */
+    static void printArray(int arr[]) 
+    { 
+        int n = arr.length; 
+        for (int i=0; i<n; ++i) 
+            System.out.print(arr[i]+" "); 
+        System.out.println(); 
+    } 
+
+
 };
