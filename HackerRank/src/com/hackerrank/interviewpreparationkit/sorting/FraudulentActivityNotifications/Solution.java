@@ -36,6 +36,7 @@ public class Solution {
             expenditure[i] = expenditureItem;
         }
 
+        printArray(expenditure);
         int result = activityNotifications(expenditure, d);
         System.out.println(result);
     }
@@ -48,43 +49,82 @@ public class Solution {
     	int finish=d;
     	int median = 0;
     	int count=0;
+    	int n = expenditure.length;
+    	boolean initial = true;
+    	int[] freq = new int[201];
+    	int prev_element=0;
     	
-    	for (int i = d; i<expenditure.length;i++) {
-    		start = i-d;
-    		finish = i-1;
-    		median = getMedian(expenditure, start, finish);
-    		//System.out.println(median);
-    		if (expenditure[i]>= median*2) {
-    			count++;
+    	for (int index=d;index<n;index++) {
+    		// Initial d-days spendings - put that into frequency array
+    		if (initial) {
+    			for (int i=0;i<d;i++) {
+    				freq[expenditure[i]] ++;
+    			}
+    			initial = false;
+    			
+    		} else {
+    			freq[expenditure[index-d-1]]--;
+    			freq[expenditure[index-1]]++;
     		}
+    			median = getMedian(freq, d);
+    			
+    			if (expenditure[index] > median * 2) {
+    				System.out.println("Median is " + median + ", Spent is " + expenditure[index] + " -> Sent notification!");
+    				count++;
+    			}
     	}
     	
     	return count;
     }
 
-    static int getMedian(int arr[], int start, int finish) 
+    static int getMedian(int freq[], int d) 
     { 
-
-    	int n = finish - start+1;
-        int[] tmp = new int[n];
-    	
-        for (int i=start;i<=finish;i++) {
-        	tmp[i-start]=arr[i];
-        }
-        
-        Arrays.sort(tmp);
         int median = 0;
+        int index = 0;
+        int n = freq.length;
+        int[] pref_sum = new int[n];
         
-        if (n%2 == 0) {
-            int index = n/2;
-            median = (tmp[index]+tmp[index+1])/2;
-        } else {
-            int index = n/2;
-            median = (tmp[index]);
+        
+        pref_sum[0] = 0;
+        
+        for (int i=1; i<n;i++) {
+        	pref_sum[i] = pref_sum[i-1]+freq[i];
         }
         
-        //printArray(tmp);
-        //System.out.println(median);
+        
+        
+        if (d%2==1) {
+        	index = d/2+1;
+        	
+        	for (int i=0; i<n;i++) {
+        		if(index<=pref_sum[i]) {
+        			median = i;
+        			break;
+        		}
+        	}
+        	
+        } else {
+        	int index1 = d/2;
+        	int index2 = d/2+1;
+        	
+        	for (int i=0; i<n;i++) {
+        		if(index1<=pref_sum[i]) {
+        			median = i;
+        			break;
+        		}
+        	}
+        	
+        	for (int i=0; i<n;i++) {
+        		if(index2<=pref_sum[i]) {
+        			median += i;
+        			break;
+        		}
+        	}
+        	
+        	median /=2;
+        	
+        }
+
         return median;
     } 
 
@@ -100,4 +140,6 @@ public class Solution {
     } 
 
 
+    
+    
 };
