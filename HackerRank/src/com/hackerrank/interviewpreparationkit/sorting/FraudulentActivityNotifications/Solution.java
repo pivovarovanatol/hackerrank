@@ -36,7 +36,7 @@ public class Solution {
             expenditure[i] = expenditureItem;
         }
 
-        printArray(expenditure);
+        //printArray(expenditure);
         int result = activityNotifications(expenditure, d);
         System.out.println(result);
     }
@@ -67,9 +67,10 @@ public class Solution {
     			freq[expenditure[index-1]]++;
     		}
     			median = getMedian(freq, d);
+				System.out.println("Median is " + median + ", Spent is " + expenditure[index]);
     			
-    			if (expenditure[index] > median * 2) {
-    				System.out.println("Median is " + median + ", Spent is " + expenditure[index] + " -> Sent notification!");
+    			if (expenditure[index] >= median * 2) {
+    				//System.out.println("Median is " + median + ", Spent is " + expenditure[index] + " -> Sent notification!");
     				count++;
     			}
     	}
@@ -85,19 +86,20 @@ public class Solution {
         int[] pref_sum = new int[n];
         
         
-        pref_sum[0] = 0;
+        pref_sum[0] = freq[0];
         
         for (int i=1; i<n;i++) {
         	pref_sum[i] = pref_sum[i-1]+freq[i];
         }
         
-        
+        //printArray(freq);
+        //printArray(pref_sum);
         
         if (d%2==1) {
-        	index = d/2+1;
+        	index = d/2;
         	
         	for (int i=0; i<n;i++) {
-        		if(index<=pref_sum[i]) {
+        		if(index<pref_sum[i]) {
         			median = i;
         			break;
         		}
@@ -106,23 +108,24 @@ public class Solution {
         } else {
         	int index1 = d/2;
         	int index2 = d/2+1;
+        	int a = 0, b = 0;
+        	int i=0;
         	
-        	for (int i=0; i<n;i++) {
-        		if(index1<=pref_sum[i]) {
-        			median = i;
+        	for (; i<n;i++) {
+        		if(index1<pref_sum[i]) {
+        			a = i;
         			break;
         		}
         	}
         	
-        	for (int i=0; i<n;i++) {
-        		if(index2<=pref_sum[i]) {
-        			median += i;
+        	for (; i<n;i++) {
+        		if(index2<pref_sum[i]) {
+        			b = i;
         			break;
         		}
         	}
         	
-        	median /=2;
-        	
+        	median = (a+b)/2;
         }
 
         return median;
