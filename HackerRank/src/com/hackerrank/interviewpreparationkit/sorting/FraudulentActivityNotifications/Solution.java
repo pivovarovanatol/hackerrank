@@ -13,7 +13,7 @@ public class Solution {
 
     public static void main(String[] args) throws IOException {
 
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\sorting\\FraudulentActivityNotifications\\data.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\sorting\\FraudulentActivityNotifications\\data1.txt");
         Scanner scanner = new Scanner(file);
         
         File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\sorting\\FraudulentActivityNotifications\\result.txt");
@@ -36,14 +36,14 @@ public class Solution {
             expenditure[i] = expenditureItem;
         }
 
-        //printArray(expenditure);
+        printArray(expenditure);
         int result = activityNotifications(expenditure, d);
         System.out.println(result);
     }
 
 
 // Complete the activityNotifications function below.
-    static int activityNotifications(int[] expenditure, int d) {
+    static int activityNotifications2(int[] expenditure, int d) {
     	//printArray(expenditure);
     	int start = 0;
     	int finish=d;
@@ -131,6 +131,103 @@ public class Solution {
         return median;
     } 
 
+    
+    
+    static int activityNotifications(int[] arr, int d) {
+    	
+    	int n = arr.length;
+    	int result = 0;
+    	int[] freqArr = new int[201];
+    	int[] sortedArr = new int[201];
+    	float median = 0;
+    	
+    	for (int i=0;i<d;i++) {
+    		freqArr[arr[i]]++;
+    	}
+    	
+    	//printSorted(sortedArr, d);
+    	
+    	
+    	for (int i=d;i<n;i++) {
+    		
+    		//System.out.print("Position: " + i + " Value: " + arr[i] + ": ");
+        	//printSorted(freqArr, d);
+    		
+        	sortedArr[0]=freqArr[0];
+        	for (int j=1;j<201;j++) {
+        		sortedArr[j]=sortedArr[j-1]+freqArr[j];
+        	}
+        	
+        	//printArray(sortedArr);
+        	
+        	if (d%2==1) {
+        		int index = d/2;
+        		//System.out.println("Index is: " + index);
+        		
+        		for (int j=1;j<201;j++) {
+        			if (sortedArr[j]>index) {
+        				median=j;
+        				break;
+        			}
+        		}
+        	} 
+        	else {
+
+        		int index1 = d/2-1;
+        		int index2 = d/2;
+
+        		//System.out.println("Index1 is: " + index1);
+        		//System.out.println("Index2 is: " + index2);
+        		
+        		for (int j=1;j<201;j++) {
+        			if (sortedArr[j]>index1) {
+        				median=j;
+        				break;
+        			}
+        		}
+        		
+        		for (int j=1;j<201;j++) {
+        			if (sortedArr[j]>index2) {
+        				median+=j;
+        				break;
+        			}
+        		}
+        		median/=2;
+        	}
+        	
+    		//System.out.println("Median is: " + median);
+    		
+    		if (median*2 <= arr[i]) {
+    			result++;
+    			//System.out.println("2 * Median is bigger than " + arr[i]);
+    		}
+    		
+    		freqArr[arr[i-d]]--;
+    		freqArr[arr[i]]++;
+    	}
+    	
+    	return result;
+    }
+    
+    
+    static void printSorted(int[] sortedArr, int d) {
+    	int[] arr = new int[d];
+    	int j = 0;
+    	
+    	for (int i=0; i<sortedArr.length;i++) {
+    		if (sortedArr[i]>0) {
+    			int tmp = sortedArr[i];
+    			
+    			while (tmp > 0) {
+        			arr[j]=i;
+        			j++;
+        			tmp--;
+    				}
+    			}
+    	}
+    	
+    	printArray(arr);
+    }
     
 
     /* A utility function to print array of size n */
