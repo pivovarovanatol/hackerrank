@@ -22,16 +22,15 @@ public class Solution {
 
         int t = scanner.nextInt();
         scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-        System.out.println(t);
 
         for (int tItr = 0; tItr < t; tItr++) {
             int n = scanner.nextInt();
             scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-            System.out.println(n);
 
             int[] arr = new int[n];
-
-            String[] arrItems = scanner.nextLine().split(" ");
+            String line = scanner.nextLine();
+            String[] arrItems = line.split(" ");
+            
             scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
 
             for (int i = 0; i < n; i++) {
@@ -41,17 +40,19 @@ public class Solution {
 
             result = countInversions(arr);
 
+            System.out.println(result);
+
+            bufferedWriter.write(String.valueOf(result));
+            bufferedWriter.newLine();
         }
 
-        bufferedWriter.write(String.valueOf(result));
-        bufferedWriter.newLine();
 
         bufferedWriter.close();
 
         scanner.close();
 
         
-        System.out.println(result);
+
     }
     
     
@@ -59,11 +60,75 @@ public class Solution {
     static long countInversions(int[] arr) {
     	long result=0;
 
+    	mergeSort(arr);
+    	printArray(arr);
+
     	return result;
     }
     
+    // Merge Sort algorithm
+    static void mergeSort(int[] arr) {
+    	int n = arr.length;
+    	int[] temp = new int[n];
+    	
+    	sortHalves(arr, temp, 0, n-1);
+    }
     
     
+    static void sortHalves(int[] arr, int[] temp, int start, int end) {
+    	
+    	if (start >= end) {
+    		return;
+    	}
+    	
+    	int middle = (start+end)/2;
+    	sortHalves(arr, temp, start, middle);
+    	sortHalves(arr, temp, middle+1, end);
+    	mergeHalves(arr, temp, start, end);
+    	
+    }
+    
+
+    static void mergeHalves(int[] arr, int[] temp, int start, int end) {
+    	
+    	int leftStart = start;
+    	int leftEnd = (start+end)/2;
+    	int rightStart = leftEnd+1;
+    	int rightEnd = end;
+    	int index = start;
+    	
+    	int indexLeft = leftStart;
+    	int indexRight = rightStart;
+    	
+    	while (indexLeft < leftEnd && indexRight < rightEnd) {
+    		if (arr[indexLeft] < arr[indexRight]) {
+    			temp[index] = arr[indexLeft];
+    			index++;
+    			indexLeft++;
+    		} else {
+    			temp[index] = arr[indexRight];
+    			index++;
+    			indexRight++;
+    		}
+    	}
+    	
+    	
+    	System.arraycopy(arr, indexLeft, temp, index, end-index-1);
+    	System.arraycopy(arr, indexRight, temp, index, end-index-1);
+    	System.arraycopy(temp, start, arr, start, end-start);
+    	
+    }
+    
+    /* A utility function to print array of size n */
+    static void printArray(int arr[]) 
+    { 
+        int n = arr.length; 
+        for (int i=0; i<n; ++i) 
+            System.out.print(arr[i]+" "); 
+        System.out.println(); 
+    } 
+
+
     
 }
 
