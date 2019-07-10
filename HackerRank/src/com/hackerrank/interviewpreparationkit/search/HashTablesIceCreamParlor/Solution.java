@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 public class Solution {
@@ -51,9 +52,54 @@ public class Solution {
     
     // Complete the whatFlavors function below.
     static void whatFlavors(int[] cost, int money) {
+    	
+    	Hashtable<Integer, Integer> cost1 = new Hashtable<Integer, Integer>();
+    	int n = cost.length;
+    	for (int i=0;i<n;i++) {
+    		cost1.put(cost[i], i);
+    	}
+    	
+    	for (int i=0;i<n;i++) {
+    		int price1 = cost[i];
+    		int diff = money - price1;
+    		
+	    		if (cost1.containsKey(diff)) {
+	    			int index1 = i+1;
+	    			int index2 = cost1.get(diff)+1;
+	    			
+	    			if (index1!=index2) {
+		    			if (index1 <= index2) {
+		        			System.out.println(index1 + " " + index2);
+		    			} else {
+		        			System.out.println(index2 + " " + index1);
+		    			}
+		    			break;
+	    			}
+	    		} else {
+	    			
+	    			for (int j=0;j<n;j++) {
+	    				if (cost[j]==diff && j !=i) {
+	    	    			int index1 = i+1;
+	    	    			int index2 = j+1;
+	    	    			
+	    	    			
+	    	    			if (index1 <= index2) {
+	    	        			System.out.println(index1 + " " + index2);
+	    	    			} else {
+	    	        			System.out.println(index2 + " " + index1);
+	    	    			}
+	    	    			break;
+	    			}
+	    		}
+    		} 
+    	}
 
-
-    }    
+    }
+    
+    
+    
+    
+    
     
 }
 
