@@ -4,16 +4,25 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Solution {
 
     public static void main(String[] args) throws IOException {
 
+    	Instant programStart = Instant.now();
+    	
         long result = 0;
 
         File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\HashTablesIceCreamParlor\\data.txt");
@@ -47,11 +56,16 @@ public class Solution {
         bufferedWriter.close();
         scanner.close();
 
+        Instant programEnd = Instant.now();
+        Duration timeElapsed = Duration.between(programStart, programEnd);
+        System.out.println("Time taken: "+ timeElapsed.toMillis() +" milliseconds");
+
+        
     }
     
     
     // Complete the whatFlavors function below.
-    static void whatFlavors(int[] cost, int money) {
+    static void whatFlavors2(int[] cost, int money) {
     	
     	Hashtable<Integer, Integer> cost1 = new Hashtable<Integer, Integer>();
     	int n = cost.length;
@@ -59,13 +73,18 @@ public class Solution {
     		cost1.put(cost[i], i);
     	}
     	
-    	for (int i=0;i<n;i++) {
-    		int price1 = cost[i];
-    		int diff = money - price1;
+		int price1;
+		int diff;
+		int index1;
+		int index2;
+
+		for (int i=0;i<n;i++) {
+    		price1 = cost[i];
+    		diff = money - price1;
     		
 	    		if (cost1.containsKey(diff)) {
-	    			int index1 = i+1;
-	    			int index2 = cost1.get(diff)+1;
+	    			index1 = i+1;
+	    			index2 = cost1.get(diff)+1;
 	    			
 	    			if (index1!=index2) {
 		    			if (index1 <= index2) {
@@ -79,8 +98,8 @@ public class Solution {
 	    			
 	    			for (int j=0;j<n;j++) {
 	    				if (cost[j]==diff && j !=i) {
-	    	    			int index1 = i+1;
-	    	    			int index2 = j+1;
+	    	    			index1 = i+1;
+	    	    			index2 = j+1;
 	    	    			
 	    	    			
 	    	    			if (index1 <= index2) {
@@ -96,6 +115,30 @@ public class Solution {
 
     }
     
+    
+
+    // Complete the whatFlavors function below.
+    static void whatFlavors(int[] cost, int money) {
+        Map<Integer,Integer> map = new HashMap<>();
+        
+        // Put first difference in the map
+        map.put(money-cost[0],1);
+        
+        // Iterate over costs to find match
+        for(int i=1; i<cost.length; i++) {
+        	
+        	// check if map already has a diff - then just print it out and return
+            if(map.containsKey(cost[i])) {
+                System.out.println(map.get(cost[i])+" "+(i+1));
+                break;
+            }
+            // else put current difference in the map with it's index
+            else if(!map.containsKey(cost[i])&&money-cost[i]>0) {
+                map.put(money-cost[i], i+1);
+            }
+        }
+
+    }    
     
     
     
