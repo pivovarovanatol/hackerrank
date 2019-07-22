@@ -23,7 +23,7 @@ public class Solution {
 
     	Instant programStart = Instant.now();
     	
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\data.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\data1.txt");
         Scanner scanner = new Scanner(file);
         
         File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\result.txt");
@@ -89,9 +89,53 @@ public class Solution {
 
     // Complete the triplets function below.
     static long triplets(int[] a, int[] b, int[] c) {
-    	long result=0;
+    	long count=0;
     	
-    	return result;
+    	Hashtable<String, Integer> triplets= new Hashtable<String, Integer>();
+    	int len_a = a.length;
+    	int len_b = b.length;
+    	int len_c = c.length;
+    	
+    	// rewrite as custom code
+    	Arrays.sort(a);
+    	Arrays.sort(b);
+    	Arrays.sort(c);
+    	
+    	int max_b = b[len_b-1]; 
+    	int end_a = len_a; 
+    	int end_c = len_c; 
+    	
+    	for (int i=0;i<len_a;i++) {
+    		if (a[i]>max_b) {
+    			end_a = i;
+    			break;
+    		}
+    	} 
+    	
+    	for (int i=0;i<len_c;i++) {
+    		if (c[i]>max_b) {
+    			end_c = i;
+    			break;
+    		}
+    	} 
+    	
+    	
+    	for (int i=0;i<len_b;i++) {
+    		//get 
+    		
+    		for (int j=0;j<end_a;j++) {
+        		for (int k=0;k<end_c;k++) {
+        			if (a[j]<=b[i] && c[k]<=b[i]) {
+            			triplets.put(a[j] + "|" + b[i] + "|"+c[k], 0);
+            			//System.out.println(a[j] + "|" + b[i] + "|"+c[k]);
+        			}
+        		}
+    		}
+    	}
+    	
+    	count = triplets.size();
+    	
+    	return count;
 
     }    
     
