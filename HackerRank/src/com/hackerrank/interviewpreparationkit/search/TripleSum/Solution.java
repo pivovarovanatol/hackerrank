@@ -23,7 +23,7 @@ public class Solution {
 
     	Instant programStart = Instant.now();
     	
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\data.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\data1.txt");
         Scanner scanner = new Scanner(file);
         
         File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\result.txt");
@@ -147,13 +147,41 @@ public class Solution {
     	int len_b = b.length;
     	int len_c = c.length;
 
-    	Arrays.sort(a);
-    	Arrays.sort(b);
-    	Arrays.sort(c);
+        int[] a1 = Arrays.stream(a).sorted().distinct().toArray();
+        int[] b1 = Arrays.stream(b).sorted().distinct().toArray();
+        int[] c1 = Arrays.stream(c).sorted().distinct().toArray();
+        
+    	// printArray(c);
     	
-    	printArray(c);
+
+//    	for (int i=0;i<len_b;i++) {
+//    		int currValue = b[i];
+//    		long countA = getIndex(a, currValue, 0, len_a-1)+1;
+//    		long countC = getIndex(c, currValue, 0, len_c-1)+1;
+//    		
+//    		count += (countA * countC);
+//    	}
     	
-    	count = getIndex(c, 5, 0, len_c-1);
+    	for (int i=0;i<b1.length;i++) {
+    		long index_a = 0;
+    		long index_c = 0;
+    		for (int j=0;j<a1.length;j++) {
+    			if (a1[j]>b1[i]) {
+    				break;
+    			}
+    			index_a=j+1;
+    		}
+    		
+    		for (int k=0;k<c1.length;k++) {
+    			if (c1[k]>b1[i]) {
+    				break;
+    			}
+    			index_c=k+1;
+    		}
+    		
+    		count += (long)index_a * (long)index_c; 
+    	}
+    	
     	
     	return count;
 
@@ -161,13 +189,38 @@ public class Solution {
 
     static int getIndex(int[] arr, int value, int start, int end) {
     	// looking for an index of the element or next smaller element in the sorted array.
-    	int index=0;
-    	int n = arr.length;
+    	
+    	if (start==end-1) {
+    		
+    		if (arr[start]>value) {
+    			return -1;
+    		}
 
+    		if (arr[start]<=value && arr[end]>value) {
+    			return start;
+    		}
+    		
+    		if (arr[end]<=value) {
+    			return end;
+    		}
+    		
+    	}
+
+    	int mid = start + (end - start)/2;
+    	
+    	int midValue = arr[mid];
+    	
+    	if (midValue > value) {
+    		return getIndex(arr, value, start, mid);
+    	}
+    	
+    	if (midValue <= value) {
+    		return getIndex(arr, value, mid, end);
+    	}
     	
     	return 0;
     }
-    
+
 
     static void printArray(int[] arr) {
     	for (int i=0;i<arr.length;i++) {
