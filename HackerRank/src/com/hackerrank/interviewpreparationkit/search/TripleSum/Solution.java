@@ -23,7 +23,7 @@ public class Solution {
 
     	Instant programStart = Instant.now();
     	
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\data1.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\data.txt");
         Scanner scanner = new Scanner(file);
         
         File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\TripleSum\\result.txt");
@@ -88,7 +88,7 @@ public class Solution {
     
 
     // Complete the triplets function below.
-    static long triplets(int[] a, int[] b, int[] c) {
+    static long triplets_naive(int[] a, int[] b, int[] c) {
     	long count=0;
     	
     	Hashtable<String, Integer> triplets= new Hashtable<String, Integer>();
@@ -139,7 +139,42 @@ public class Solution {
 
     }    
     
+
+    // Complete the triplets function below.
+    static long triplets(int[] a, int[] b, int[] c) {
+    	long count=0;
+    	int len_a = a.length;
+    	int len_b = b.length;
+    	int len_c = c.length;
+
+    	Arrays.sort(a);
+    	Arrays.sort(b);
+    	Arrays.sort(c);
+    	
+    	printArray(c);
+    	
+    	count = getIndex(c, 5, 0, len_c-1);
+    	
+    	return count;
+
+    }    
+
+    static int getIndex(int[] arr, int value, int start, int end) {
+    	// looking for an index of the element or next smaller element in the sorted array.
+    	int index=0;
+    	int n = arr.length;
+
+    	
+    	return 0;
+    }
     
+
+    static void printArray(int[] arr) {
+    	for (int i=0;i<arr.length;i++) {
+    		System.out.print(arr[i] + " ");
+    	}
+    	System.out.println();
+    }
 }
 
 
