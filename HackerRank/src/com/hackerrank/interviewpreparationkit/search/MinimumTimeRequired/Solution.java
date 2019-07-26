@@ -66,11 +66,32 @@ public class Solution {
 
     // Complete the minTime function below.
     static long minTime(long[] machines, long goal) {
-    	
-
-    	return goal;
+        Arrays.sort(machines);
+    
+        long max = machines[machines.length - 1];
+        long minDays = 0;
+        long maxDays = max*goal;
+        long result = -1;
+        
+        while (minDays < maxDays) {
+            long mid = (minDays + maxDays) / 2;
+            long unit = 0;
+            for (long machine : machines) {
+                unit += mid / machine;
+            }
+            if (unit < goal) {
+                minDays = mid+1;
+            } else {
+                result = mid;
+                maxDays = mid;
+            }
+        }
+        return result;
     }
-
+    
+    
+    
+    
     static void printArray(int[] arr) {
     	for (int i=0;i<arr.length;i++) {
     		System.out.print(arr[i] + " ");
