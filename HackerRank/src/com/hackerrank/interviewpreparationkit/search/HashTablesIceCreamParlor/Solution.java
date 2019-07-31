@@ -1,4 +1,5 @@
 package com.hackerrank.interviewpreparationkit.search.HashTablesIceCreamParlor;
+// https://www.hackerrank.com/challenges/ctci-ice-cream-parlor/problem
 
 import java.io.BufferedWriter;
 import java.io.File;
