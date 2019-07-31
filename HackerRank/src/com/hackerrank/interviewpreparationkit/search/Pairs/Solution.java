@@ -1,4 +1,5 @@
 package com.hackerrank.interviewpreparationkit.search.Pairs;
+// https://www.hackerrank.com/challenges/pairs/problem
 
 import java.io.BufferedWriter;
 import java.io.File;
