@@ -1,4 +1,5 @@
 package com.hackerrank.interviewpreparationkit.search.MinimumTimeRequired;
+// https://www.hackerrank.com/challenges/minimum-time-required/problem
 
 import java.io.BufferedWriter;
 import java.io.File;
