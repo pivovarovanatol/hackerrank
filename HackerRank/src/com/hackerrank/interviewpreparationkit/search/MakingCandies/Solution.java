@@ -49,7 +49,8 @@ public class Solution {
         bufferedWriter.close();
 
         scanner.close();
-
+        
+        System.out.println(result);
         Instant programEnd = Instant.now();
         Duration timeElapsed = Duration.between(programStart, programEnd);
         System.out.println("Time taken: "+ timeElapsed.toMillis() +" milliseconds");
@@ -61,7 +62,47 @@ public class Solution {
     // Complete the minimumPasses function below.
     static long minimumPasses(long m, long w, long p, long n) {
 
-    	return 0;
+    	long currentAmount = 0;
+    	long count=0;
+    	long currentCapacity=0;
+    	long newHires=0; 
+    	long newMachines=0; 
+    	
+    	while (currentAmount < n) {
+    		
+			currentAmount -= (newHires+newMachines)*p; 
+    		currentCapacity = m * w; 
+    		currentAmount+=currentCapacity;
+    		
+    		/*if (currentCapacity*2 >= n) {
+    			continue;
+    		}*/
+    		
+    		if (currentAmount >= p*2) {
+    			newHires = currentAmount/p/2;
+    			newMachines = currentAmount/p/2;
+    			m+=newMachines;
+    			w+=newHires;
+    		} else {
+        		if (currentAmount >= p) {
+        			if (m > w) {
+        				currentAmount-=p;
+        				w++;
+        			} else {
+        				currentAmount-=p;
+        				m++;
+        			}
+    		}
+    		
+    				
+    			
+    		}
+    		
+    		count++;
+    		
+    	}
+    	
+    	return count;
     }    
     
     static void printArray(long[] arr) {
