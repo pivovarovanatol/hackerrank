@@ -62,43 +62,58 @@ public class Solution {
     // Complete the minimumPasses function below.
     static long minimumPasses(long m, long w, long p, long n) {
 
-    	long currentAmount = 0;
-    	long count=0;
-    	long currentCapacity=0;
+    	double currentAmount = 0;
+    	long count=1;
+    	double currentCapacity=0;
     	long newHires=0; 
     	long newMachines=0; 
+
     	
     	while (currentAmount < n) {
     		
 			currentAmount -= (newHires+newMachines)*p; 
+			newHires=0;
+			newMachines=0;
     		currentCapacity = m * w; 
     		currentAmount+=currentCapacity;
-    		
-    		/*if (currentCapacity*2 >= n) {
-    			continue;
-    		}*/
-    		
-    		if (currentAmount >= p*2) {
-    			newHires = currentAmount/p/2;
-    			newMachines = currentAmount/p/2;
-    			m+=newMachines;
-    			w+=newHires;
-    		} else {
-        		if (currentAmount >= p) {
-        			if (m > w) {
-        				currentAmount-=p;
-        				w++;
-        			} else {
-        				currentAmount-=p;
-        				m++;
-        			}
+    		if (currentAmount>=n) {
+    			break;
+    		}
+
+    		if (currentCapacity < p) {
+    			
+    			double diff = p / (currentCapacity)-1;
+    			currentAmount += diff * currentCapacity;
+    			count+=diff;
+    		}
+    		else {
+           		count++;
     		}
     		
-    				
+    		
+    		
+    		if (n > currentCapacity + currentAmount) {
+	    			
+	    		if (currentAmount >= p*2) {
+	    			newHires = (long) (currentAmount/p/2);
+	    			newMachines = (long) (currentAmount/p/2);
+	    			m+=newMachines;
+	    			w+=newHires;
+	    		} else {
+	        		if (currentAmount >= p) {
+	        			if (m > w) {
+	        				currentAmount-=p;
+	        				w++;
+	        			} else {
+	        				currentAmount-=p;
+	        				m++;
+	        			}
+	    		}
+    		}
     			
     		}
-    		
-    		count++;
+
+
     		
     	}
     	
