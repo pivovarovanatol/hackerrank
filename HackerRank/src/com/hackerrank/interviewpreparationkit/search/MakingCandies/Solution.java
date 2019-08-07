@@ -25,7 +25,7 @@ public class Solution {
 
     	Instant programStart = Instant.now();
     	
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\MakingCandies\\data.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\MakingCandies\\data1.txt");
         Scanner scanner = new Scanner(file);
         
         File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\MakingCandies\\result.txt");
@@ -62,12 +62,14 @@ public class Solution {
     // Complete the minimumPasses function below.
     static long minimumPasses(long m, long w, long p, long n) {
 
-    	double currentAmount = 0;
-    	long count=1;
-    	double currentCapacity=0;
+    	long currentAmount = 0;
+    	long count=0;
+    	long currentCapacity=m*w;
     	long newHires=0; 
     	long newMachines=0; 
-
+    	
+    	System.out.println(p/m);
+    	
     	
     	while (currentAmount < n) {
     		
@@ -75,21 +77,23 @@ public class Solution {
 			newHires=0;
 			newMachines=0;
     		currentCapacity = m * w; 
-    		currentAmount+=currentCapacity;
     		if (currentAmount>=n) {
     			break;
     		}
 
-    		if (currentCapacity < p) {
+    		if (currentCapacity + currentAmount < p) {
     			
-    			double diff = p / (currentCapacity)-1;
+    			long diff = p / currentCapacity;
     			currentAmount += diff * currentCapacity;
     			count+=diff;
     		}
     		else {
            		count++;
+        		currentAmount+=currentCapacity;
     		}
     		
+
+    		//count++;
     		
     		
     		if (n > currentCapacity + currentAmount) {
