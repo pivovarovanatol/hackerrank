@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -64,32 +65,35 @@ public class Solution {
 
     	long currentAmount = 0;
     	long count=0;
-    	long currentCapacity=m*w;
+    	double currentCapacity=(double)m*w;
     	long newHires=0; 
     	long newMachines=0; 
     	
-    	System.out.println(p/m);
-    	
+    	if (currentCapacity>n) {
+    		return 1;
+    	}
     	
     	while (currentAmount < n) {
     		
 			currentAmount -= (newHires+newMachines)*p; 
 			newHires=0;
 			newMachines=0;
-    		currentCapacity = m * w; 
+    		currentCapacity = (double)m * w; 
     		if (currentAmount>=n) {
     			break;
     		}
 
-    		if (currentCapacity + currentAmount < p) {
+    		//if (currentCapacity + currentAmount < p) {
+       		if (currentCapacity + currentAmount < p) {
     			
-    			long diff = p / currentCapacity;
-    			currentAmount += diff * currentCapacity;
+    			//long diff = p / currentCapacity;
+    			long diff = p / (long)currentCapacity;
+    			currentAmount += (double)diff * currentCapacity;
     			count+=diff;
     		}
     		else {
            		count++;
-        		currentAmount+=currentCapacity;
+        		currentAmount+=(long)currentCapacity;
     		}
     		
 
@@ -123,6 +127,64 @@ public class Solution {
     	
     	return count;
     }    
+    
+    
+    
+ // Complete the minimumPasses function below.
+    static long minimumPasses2(long m, long w, long p, long n) {
+            long candies = 0;
+            long invest = 0;
+            long spend = Long.MAX_VALUE;
+
+            while (candies < n) {
+                    // preventing overflow in m*w
+                    long passes = (long) (((p - candies) / (double) m) / w);
+
+                    if (passes <= 0) {
+                            // machines we can buy in total
+                            long mw = candies / p + m + w;
+                            long half = mw >>> 1;
+                            if (m > w) {
+                                    m = Math.max(m, half);
+                                    w = mw - m;
+                            } else {
+                                    w = Math.max(w, half);
+                                    m = mw - w;
+                            }
+                            candies %= p;
+                            passes++;
+                    }
+
+                    // handling overflowing
+                    // if overflowing is encountered -> candies count are definitely more than long
+                    // thus it is more than n since n is long
+                    // so we've reached the goal and we can break the loop
+                    long mw;
+                    long pmw;
+                    try {
+                            mw = Math.multiplyExact(m, w);
+                            pmw = Math.multiplyExact(passes, mw);
+                    } catch (ArithmeticException ex) {
+                            // we need to add current pass
+                            invest += 1;
+                            // increment will be 1 because of overflow
+                            spend = Math.min(spend, invest + 1);
+                            break;
+                    }
+
+                    candies += pmw;
+                    invest += passes;
+                    long increment = (long) Math.ceil((n - candies) / (double) mw);
+                    spend = Math.min(spend, invest + increment);
+            }
+
+            return Math.min(spend, invest);
+    }
+    
+    
+    
+    
+    
     
     static void printArray(long[] arr) {
     	for (int i=0;i<arr.length;i++) {
