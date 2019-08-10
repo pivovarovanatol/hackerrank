@@ -42,6 +42,7 @@ public class Solution {
 
         long n = Long.parseLong(mwpn[3]);
 
+//        long result = minimumPasses1(m, w, p, n);
         long result = minimumPasses(m, w, p, n);
 
         bufferedWriter.write(String.valueOf(result));
@@ -75,6 +76,7 @@ public class Solution {
     	
     	while (currentAmount < n) {
     		
+    		System.out.println("At step:" + count + ", money: " + currentAmount + ", machines: " + m + ", workers: " + w);
 			currentAmount -= (newHires+newMachines)*p; 
 			newHires=0;
 			newMachines=0;
@@ -190,38 +192,41 @@ public class Solution {
     	long end = n;
     	double currAmt = (double)m * (double)w;
     	long mid =0;
-    	long step=1;
-    	
-    	while (true) {
-    		mid = (start+end)>>>1;
-    		//mid=10;
-    		
-        	long canBuy = mwCanBuy(mid,m,w,p,0, n);
-    		if (canBuy >= n) {
-    			break;
-    			} else {
-    				start = mid;
-    			}
-        	System.out.println(mid + " " + canBuy);
-    		step++;
-    		if (step>n) {
-    			break;
-    		}
-    	}
+    	long step=-1;
     	
     	
+    	long canBuy=0;
+       	step = canBuy = mwCanBuy(1,m,w,p,0,n);
+    	System.out.println("Final step:" + step);
         return step;
     }
     
 
     
     static long mwCanBuy(long step, long m, long w, long p, long currAmt, long n) {
-    	if (currAmt + m*w>= n) {
-    		return currAmt + m*w;
-    	}
-    	if (step==1) {
-  			return currAmt+m*w;
+//    	if (currAmt + m*w>= n) {
+//    		return currAmt + m*w;
+//    	}
+		if (currAmt>n) {
+//    		System.out.println("At step:" + step + ", money: " + currAmt + ", machines: " + m + ", workers: " + w);
+			return 0;
+		}
+
+		if (step==-100) {
+//    		System.out.println("At step:" + step + ", money: " + currAmt + ", machines: " + m + ", workers: " + w);
+  			return 2;
     	} else {
+    		currAmt += m*w;
+    		if (currAmt + m*w>=n) {
+//        		System.out.println("At final step:" + step + ", money: " + currAmt + ", machines: " + m + ", workers: " + w);
+    			return 2;
+    		}
+
+    		if (currAmt + 2*m*w>=n) {
+        		return 1 + mwCanBuy(step+1, m, w, p, currAmt, n); 
+    		}
+    		
+    		
     		if (currAmt>=p) {
     			
     			if (currAmt >=p*2) {
@@ -239,10 +244,9 @@ public class Solution {
     			}
     			
     		} else {
-        		currAmt += m*w;
     		}
-    		System.out.println(step + " " + currAmt + " " + m + " " + w);
-    		return mwCanBuy(step-1, m, w, p, currAmt, n); 
+//    		System.out.println("At step:" + step + ", money: " + currAmt + ", machines: " + m + ", workers: " + w);
+    		return 1 + mwCanBuy(step+1, m, w, p, currAmt, n); 
     	}
     	
     }
