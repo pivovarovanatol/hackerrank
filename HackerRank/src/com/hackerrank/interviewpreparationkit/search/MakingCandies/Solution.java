@@ -26,7 +26,7 @@ public class Solution {
 
     	Instant programStart = Instant.now();
     	
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\MakingCandies\\data1.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\MakingCandies\\data.txt");
         Scanner scanner = new Scanner(file);
         
         File file_result = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\search\\MakingCandies\\result.txt");
@@ -61,7 +61,7 @@ public class Solution {
     
 
     // Complete the minimumPasses function below.
-    static long minimumPasses(long m, long w, long p, long n) {
+    static long minimumPasses1(long m, long w, long p, long n) {
 
     	long currentAmount = 0;
     	long count=0;
@@ -183,8 +183,69 @@ public class Solution {
     
     
     
+    // Complete the minimumPasses function below.
+    static long minimumPasses(long m, long w, long p, long n) {
+
+    	long start = 1;
+    	long end = n;
+    	double currAmt = (double)m * (double)w;
+    	long mid =0;
+    	long step=1;
+    	
+    	while (true) {
+    		mid = (start+end)>>>1;
+    		//mid=10;
+    		
+        	long canBuy = mwCanBuy(mid,m,w,p,0, n);
+    		if (canBuy >= n) {
+    			break;
+    			} else {
+    				start = mid;
+    			}
+        	System.out.println(mid + " " + canBuy);
+    		step++;
+    		if (step>n) {
+    			break;
+    		}
+    	}
+    	
+    	
+        return step;
+    }
     
+
     
+    static long mwCanBuy(long step, long m, long w, long p, long currAmt, long n) {
+    	if (currAmt + m*w>= n) {
+    		return currAmt + m*w;
+    	}
+    	if (step==1) {
+  			return currAmt+m*w;
+    	} else {
+    		if (currAmt>=p) {
+    			
+    			if (currAmt >=p*2) {
+    				m+=(currAmt/p)/2;
+    				w+=(currAmt/p)/2;
+    				currAmt-=p*(currAmt/p);
+    			} else {
+        			if (m<=w) {
+        				m+=currAmt/p;
+        				currAmt-=p*(currAmt/p);
+        			} else {
+        				w+=currAmt/p;
+        				currAmt-=p*(currAmt/p);
+        			}
+    			}
+    			
+    		} else {
+        		currAmt += m*w;
+    		}
+    		System.out.println(step + " " + currAmt + " " + m + " " + w);
+    		return mwCanBuy(step-1, m, w, p, currAmt, n); 
+    	}
+    	
+    }
     
     static void printArray(long[] arr) {
     	for (int i=0;i<arr.length;i++) {
