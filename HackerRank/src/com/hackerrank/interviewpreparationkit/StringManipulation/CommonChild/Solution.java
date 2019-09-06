@@ -71,7 +71,7 @@ public class Solution {
         }
         
         
-        static int commonChildHelper(char[] str1, char[] str2, int index1, int index2, HashMap<String,Integer> hm) {
+        static int commonChildHelper2(char[] str1, char[] str2, int index1, int index2, HashMap<String,Integer> hm) {
         	
         	if (hm.containsKey(index1 + " " + index2)) {
         		return hm.get(index1 + " " + index2);
@@ -85,10 +85,10 @@ public class Solution {
         	int ret = 0;
         	
         	if (str1[index1] == str2[index2]) {
-        		ret = 1 + commonChildHelper(str1, str2, index1-1, index2-1, hm);
+        		ret = 1 + commonChildHelper2(str1, str2, index1-1, index2-1, hm);
         	} else {
-        		int count1 = commonChildHelper(str1, str2, index1-1, index2, hm);
-        		int count2 = commonChildHelper(str1, str2, index1, index2-1, hm);
+        		int count1 = commonChildHelper2(str1, str2, index1-1, index2, hm);
+        		int count2 = commonChildHelper2(str1, str2, index1, index2-1, hm);
         		
         		ret = count1 > count2 ? count1 : count2;
         	}
@@ -98,7 +98,74 @@ public class Solution {
         }        
         
         
+        static int commonChildHelper(char[] str1, char[] str2, int index1, int index2, HashMap<String,Integer> hm) {
+
+        	int max_count = 0;
+        	
+        	// Build new matrix with strings on the sides
+        	int n = str1.length+2;
+        	int m = str2.length+2;
+        	
+        	//printArray(str1,n);
+        	//printArray(str2,m);
+        	
+        	
+        	
+        	int arr[][] = new int[m][n];
+        	
+        	for (int j=2;j<n;j++) {
+        		arr[0][j]=str1[j-2];
+        	}
+        	
+        	for (int i=2;i<m;i++) {
+        		arr[i][0]=str2[i-2];
+        	}
+        	
+        	
+        	for (int i=2;i<m;i++) {
+        		for (int j=2;j<n;j++) {
+//        			int char1 = arr[0][j];
+//        			int char2 = arr[i][0];
+//        			int diag = arr[i-1][j-1];
+//        			int prevColumn = arr[i][j-1];
+//        			int prevRow = arr[i-1][j];
+        			
+        			if (arr[0][j] == arr[i][0]) {
+        				arr[i][j]=1+arr[i-1][j-1];
+        				
+        				if (arr[i][j] > max_count) {
+        					max_count = arr[i][j]; 
+        				}
+        				
+        			} else {
+        				arr[i][j] = Math.max(arr[i-1][j], arr[i][j-1]);
+        			}
+        		
+        		}
+        	}
+        	
+        	//printMatrix(arr, n,m);
+        	return max_count;
+        }        
         
+        
+        static void printMatrix(int[][] arr, int n, int m) {
+        	
+        	for (int i=0;i<m;i++) {
+        		for (int j=0;j<n;j++) {
+        			System.out.print(arr[i][j] + " ");
+        		}
+        		System.out.println();
+        	}
+        }
+    
+        static void printArray(char[] arr, int n) {
+        	
+        		for (int j=0;j<n;j++) {
+        			System.out.print((int) arr[j] + " ");
+        		}
+        		System.out.println();
+        }
     
 }
 
