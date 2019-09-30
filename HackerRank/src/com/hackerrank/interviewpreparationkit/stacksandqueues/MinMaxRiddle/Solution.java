@@ -30,7 +30,7 @@ public class Solution {
 
     	Instant programStart = Instant.now();
     	
-        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\stacksandqueues\\MinMaxRiddle\\data1.txt");
+        File file = new File("C:\\Users\\i855719\\git\\hackerrank\\HackerRank\\src\\com\\hackerrank\\interviewpreparationkit\\stacksandqueues\\MinMaxRiddle\\data.txt");
         //File file = new File(Solution.class.getClassLoader().getResource("data.txt").getFile());
         Scanner scanner = new Scanner(file);
         
