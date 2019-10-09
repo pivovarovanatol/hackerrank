@@ -96,45 +96,78 @@ public class Solution {
     		}
     	}
     	
-    	Node start = new Node(startX,startY,0);
-    	elements.add(start);
+    	ArrayList<Node> path = new ArrayList<Node>();
     	
-    	while (1==1) {
-    		if (elements.isEmpty()) {
-    			break;
-    		}
-    		
-    		Node node = elements.poll();
+    	Node start = new Node(startX,startY,0,null);
+    	elements.add(start);
+
+    	Node finish = null;
+		Node node = null;
+    	
+    	while (!elements.isEmpty()) {
+
+    		node = elements.poll();
     		visited.put(node, true);
     		// Check if we found the goal node. If yes -> return the distance!
     		if (node.x == goalX && node.y == goalY) {
-    			return node.dist;
+    			//return node.dist;
+    			finish=node;
+    			break;
     		}	
 
-    		Node next1 = new Node(node.x+1, node.y, node.dist+1);
+    		Node next1 = new Node(node.x+1, node.y, node.dist+1, node);
     		if (isValid(next1, n, arr, visited)) {
     			elements.add(next1);
     		}
 
-    		Node next2 = new Node(node.x, node.y+1, node.dist+1);
+    		Node next2 = new Node(node.x, node.y+1, node.dist+1, node);
     		if (isValid(next2, n, arr, visited)) {
     			elements.add(next2);
     		}
     		
-    		Node next3 = new Node(node.x-1, node.y, node.dist+1);
+    		Node next3 = new Node(node.x-1, node.y, node.dist+1, node);
     		if (isValid(next3, n, arr, visited)) {
     			elements.add(next3);
     		}
 
-    		Node next4 = new Node(node.x, node.y-1, node.dist+1);
+    		Node next4 = new Node(node.x, node.y-1, node.dist+1, node);
     		if (isValid(next4, n, arr, visited)) {
     			elements.add(next4);
     		}
+    	}
+
+    	Node tmp = finish;
+    	Node prev = null; 
+    	int steps = 0;
+    	int xDir = -1;
+    	int yDir = -1;
+    	int moves = 1;
     	
-    	
+    	while (tmp != null) {
+    		
+    		if (prev!=null) {
+        		if (prev.x == tmp.x) {
+        			if (xDir==0) {
+        				moves++;
+        			}
+        			xDir=1;
+        			yDir=0;
+        		} else {
+        			if (yDir==0) {
+        				moves++;
+        			}
+        			xDir=0;
+        			yDir=1;
+        		}
+    		}
+    		steps++;
+    		prev = tmp;
+    		tmp = tmp.parent;
     	}
     	
-    	return 0;
+    	//return finish.dist;
+    	//return steps-1;
+    	return moves;
     }
 
     static class Node {
@@ -142,12 +175,28 @@ public class Solution {
     	public int y;
     	public int dist;
     	public char direction;
+    	public Node parent;
     	
     	Node (int x, int y, int dist) {
     		this.x = x;
     		this.y = y;
     		this.dist = dist;
     	}
+    	
+    	Node (int x, int y, Node parent) {
+    		this.x = x;
+    		this.y = y;
+    		this.parent = parent;
+    	}
+
+    	Node (int x, int y, int dist, Node parent) {
+    		this.x = x;
+    		this.y = y;
+    		this.parent = parent;
+    		this.dist = dist;
+    	}
+
+
     }
 
 
