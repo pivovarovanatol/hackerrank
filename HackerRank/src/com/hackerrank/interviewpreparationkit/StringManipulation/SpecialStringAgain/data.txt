@@ -1,0 +1,14 @@
+4
+aaaa
+10
+
+7
+abcbaba
+10
+
+5
+asasd
+7
+
+
+
